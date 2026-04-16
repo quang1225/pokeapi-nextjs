@@ -16,19 +16,16 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  // Optimized animation using transform and opacity for better performance
   const animateThemeChange = useCallback(
     async (newTheme: string) => {
       if (!buttonRef.current || isAnimating) return;
 
       setIsAnimating(true);
 
-      // Get button position (cached)
       const buttonRect = buttonRef.current.getBoundingClientRect();
       const x = buttonRect.left + buttonRect.width / 2;
       const y = buttonRect.top + buttonRect.height / 2;
 
-      // Create or reuse overlay element
       if (!overlayRef.current) {
         overlayRef.current = document.createElement("div");
         overlayRef.current.style.cssText = `
@@ -49,28 +46,23 @@ export function ThemeToggle() {
 
       const overlay = overlayRef.current;
 
-      // Set initial state - smooth animati
       overlay.style.background = newTheme === "dark" ? "#0a0a0a" : "#ffffff";
       overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
       overlay.style.opacity = "1";
       overlay.style.transition = "clip-path 0.5s ease-out";
 
-      // Use requestAnimationFrame for maximum performance
       requestAnimationFrame(() => {
-        // Calculate radius efficiently - simpler formula
         const maxRadius =
           Math.hypot(
             Math.max(x, window.innerWidth - x),
             Math.max(y, window.innerHeight - y),
-          ) + 50; // Small buffer for clean edges
+          ) + 50;
 
         overlay.style.clipPath = `circle(${maxRadius}px at ${x}px ${y}px)`;
 
-        // Switch theme instantly for no content fade
         setTheme(newTheme);
       });
 
-      // Smooth cleanup
       setTimeout(() => {
         if (overlay) {
           overlay.style.opacity = "0";
@@ -84,58 +76,42 @@ export function ThemeToggle() {
     [isAnimating, setTheme],
   );
 
-  const handleThemeToggle = useCallback(
-    async () => {
-      // Prevent multiple rapid clicks
-      if (isAnimating) return;
+  const handleThemeToggle = useCallback(async () => {
+    if (isAnimating) return;
 
-      const newTheme = theme === "light" ? "dark" : "light";
+    const newTheme = theme === "light" ? "dark" : "light";
 
-      // Get button position for CSS custom properties (for View Transitions API)
-      if (buttonRef.current) {
-        const buttonRect = buttonRef.current.getBoundingClientRect();
-        const x = buttonRect.left + buttonRect.width / 2;
-        const y = buttonRect.top + buttonRect.height / 2;
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const x = buttonRect.left + buttonRect.width / 2;
+      const y = buttonRect.top + buttonRect.height / 2;
 
-        // Set CSS custom properties more efficiently
-        document.documentElement.style.setProperty(
-          "--theme-toggle-x",
-          `${x}px`,
-        );
-        document.documentElement.style.setProperty(
-          "--theme-toggle-y",
-          `${y}px`,
-        );
-      }
+      document.documentElement.style.setProperty("--theme-toggle-x", `${x}px`);
+      document.documentElement.style.setProperty("--theme-toggle-y", `${y}px`);
+    }
 
-      // Check if browser supports View Transitions API
-      if (
-        typeof document !== "undefined" &&
-        "startViewTransition" in document
-      ) {
-        setIsAnimating(true);
+    if (
+      typeof document !== "undefined" &&
+      "startViewTransition" in document
+    ) {
+      setIsAnimating(true);
 
-        try {
-          const transition = document.startViewTransition(() => {
-            setTheme(newTheme);
-          });
+      try {
+        const transition = document.startViewTransition(() => {
+          setTheme(newTheme);
+        });
 
-          await transition.finished;
-        } catch {
-          // Fallback if View Transitions fails
-          await animateThemeChange(newTheme);
-        } finally {
-          setIsAnimating(false);
-        }
-      } else {
-        // Optimized fallback animation
+        await transition.finished;
+      } catch {
         await animateThemeChange(newTheme);
+      } finally {
+        setIsAnimating(false);
       }
-    },
-    [theme, isAnimating, animateThemeChange, setTheme],
-  );
+    } else {
+      await animateThemeChange(newTheme);
+    }
+  }, [theme, isAnimating, animateThemeChange, setTheme]);
 
-  // Cleanup overlay on unmount
   useEffect(() => {
     return () => {
       if (overlayRef.current) {

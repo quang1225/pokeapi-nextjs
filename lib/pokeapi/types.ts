@@ -7,6 +7,14 @@ export interface TypeListResponse {
   results: NamedApiResource[];
 }
 
+/** `GET /pokemon?limit=&offset=` — PokéAPI resource list pagination */
+export interface PokemonNamedResourceListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: NamedApiResource[];
+}
+
 export interface TypeSlotEntry {
   pokemon: NamedApiResource;
   slot: number;

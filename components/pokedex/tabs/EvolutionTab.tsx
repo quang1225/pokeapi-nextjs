@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronRight } from "lucide-react";
+
 import { useEvolution } from "@/hooks/useEvolution";
 
 import { Loader } from "../Loader";
@@ -40,7 +42,11 @@ export function EvolutionTab({ id }: EvolutionTabProps) {
               <span>{current.name.replace(/-/g, " ")}</span>
             </div>
 
-            <span className="arrow" aria-hidden />
+            <ChevronRight
+              className="evolution-arrow-icon"
+              strokeWidth={2.5}
+              aria-hidden
+            />
 
             <div>
               <div className="poke-img">

@@ -2,8 +2,6 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-
 import { AboutTab } from "./tabs/AboutTab";
 import { EvolutionTab } from "./tabs/EvolutionTab";
 import { StatsTab } from "./tabs/StatsTab";
@@ -20,7 +18,7 @@ export function ModalTabs({ pokemonId }: ModalTabsProps) {
       className="flex min-h-0 min-w-0 flex-1 flex-col"
     >
       <Tabs.List asChild>
-        <nav>
+        <nav className="modal-tabs-nav">
           <Tabs.Trigger value="about">About</Tabs.Trigger>
           <Tabs.Trigger value="stats">Stats</Tabs.Trigger>
           <Tabs.Trigger value="evolution">Evolution</Tabs.Trigger>
@@ -28,27 +26,27 @@ export function ModalTabs({ pokemonId }: ModalTabsProps) {
       </Tabs.List>
       <Tabs.Content
         value="about"
-        className="mt-0 flex min-h-0 flex-1 flex-col outline-none"
+        className="modal-tab-panel mt-0 flex min-h-0 min-w-0 flex-1 flex-col outline-none"
       >
-        <ScrollArea className="data-container data-container--radix">
+        <div className="data-container modal-scroll-panel">
           <AboutTab />
-        </ScrollArea>
+        </div>
       </Tabs.Content>
       <Tabs.Content
         value="stats"
-        className="mt-0 flex min-h-0 flex-1 flex-col outline-none"
+        className="modal-tab-panel mt-0 flex min-h-0 min-w-0 flex-1 flex-col outline-none"
       >
-        <ScrollArea className="data-container data-container--radix">
+        <div className="data-container modal-scroll-panel">
           <StatsTab />
-        </ScrollArea>
+        </div>
       </Tabs.Content>
       <Tabs.Content
         value="evolution"
-        className="mt-0 flex min-h-0 flex-1 flex-col outline-none"
+        className="modal-tab-panel mt-0 flex min-h-0 min-w-0 flex-1 flex-col outline-none"
       >
-        <ScrollArea className="data-container data-container--radix">
+        <div className="data-container modal-scroll-panel">
           <EvolutionTab id={pokemonId} />
-        </ScrollArea>
+        </div>
       </Tabs.Content>
     </Tabs.Root>
   );

@@ -33,7 +33,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
         <span className="id-number">{`#${paddedId}`}</span>
         <span className="pokemon-name">{name}</span>
 
-        <div className="types">
+        <div className="types types--inline">
           {types.map(({ name: typeName }) => (
             <div key={typeName} className={typeName}>
               <img src={getPublicTypeIconSrc(typeName)} alt="" />

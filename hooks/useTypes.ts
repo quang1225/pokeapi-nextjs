@@ -9,7 +9,10 @@ export function useTypes() {
     queryFn: async () => {
       const data = await apiFetchJson<TypeListResponse>("/type");
       return data.results.filter(
-        ({ name }) => name !== "unknown" && name !== "shadow",
+        ({ name }) =>
+          name !== "unknown" &&
+          name !== "shadow" &&
+          name !== "stellar",
       );
     },
     staleTime: 1000 * 60 * 60,
