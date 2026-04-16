@@ -1,7 +1,7 @@
 {
   "name": "pokeapi-nextjs",
   "version": "1.0.0",
-  "private": true,
+  "author": "quang1225",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
